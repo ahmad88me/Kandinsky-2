@@ -25,8 +25,9 @@ setup(
         "einops",
         "sentencepiece",
         "diffusers",
-        "accelerate"
-  
+        "accelerate",
+        "clip @ git+https://github.com/openai/CLIP.git",
+        "opencv-python"
     ],
     author="",
 )
