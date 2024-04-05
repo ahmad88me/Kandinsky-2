@@ -20,6 +20,7 @@ from omegaconf import OmegaConf
 import clip
 import argparse
 
+
 def drop_first_layer(path):
     d = {}
     state_dict = torch.load(path)
@@ -27,6 +28,7 @@ def drop_first_layer(path):
         if key != 'input_blocks.0.0.weight':
             d[key] = state_dict[key]
     return d
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -65,11 +67,13 @@ def main():
     clip_model.token_embedding = None
     clip_model.text_projection = None
     clip_model = clip_model.eval().to(device)
-    train_unclip(unet=model, diffusion=diffusion, image_encoder=image_encoder,
-                  clip_model=clip_model, text_encoder=text_encoder, optimizer=optimizer,
-                  lr_scheduler=lr_scheduler, schedule_sampler=schedule_sampler, 
-                  train_loader=train_loader, val_loader=None, scale=config['image_enc_params']['scale'],
-                  num_epochs=config['num_epochs'], save_every=config['save_every'], save_name=config['save_name'],
-                  save_path=config['save_path'],  inpainting=config['inpainting'], device=device)
+    train_unclip(unet=model, diffusion=diffusion, image_encoder=image_encoder, clip_model=clip_model,
+                 text_encoder=text_encoder, optimizer=optimizer, lr_scheduler=lr_scheduler,
+                 schedule_sampler=schedule_sampler, train_loader=train_loader, val_loader=None,
+                 scale=config['image_enc_params']['scale'], num_epochs=config['num_epochs'],
+                 save_every=config['save_every'], save_name=config['save_name'], save_path=config['save_path'],
+                 inpainting=config['inpainting'], device=device)
+
+
 if __name__ == '__main__':
     main()
