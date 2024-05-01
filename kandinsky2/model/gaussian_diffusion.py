@@ -829,7 +829,6 @@ def _extract_into_tensor(arr, timesteps, broadcast_shape):
     except Exception as e:
         # For MPS
         res = th.from_numpy(arr).to(device=timesteps.device, dtype=th.float32)[timesteps].float()
-
     while len(res.shape) < len(broadcast_shape):
         res = res[..., None]
     return res.expand(broadcast_shape)
